@@ -2,15 +2,15 @@
 //import org.junit.jupiter.api.Test;
 //
 //public class CaeserClipherTest {
-//    CaesarCipher caeserClipher;
+//    account.cipher.CaesarCipher caeserClipher;
 //@Test
 //    public void returnPasswordForMama(){
-//    caeserClipher = new CaesarCipher("Mama");
+//    caeserClipher = new account.cipher.CaesarCipher("Mama");
 //    assertEquals("Wkwk",caeserClipher.encryptPassword());
 //}
 //@Test
 //    public void returnPasswordForNull() {
-//    caeserClipher = new CaesarCipher("");
+//    caeserClipher = new account.cipher.CaesarCipher("");
 //    assertEquals("", caeserClipher.encryptPassword());
 //}
 //}
