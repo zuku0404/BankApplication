@@ -1,7 +1,6 @@
 package gui.account;
 
-import data_base.account_information.AccountCashToDisplayDB;
-import data_base.account_information.AccountNumberToDisplayDB;
+import data_base.account_information.AccountInformationFetcher;
 
 import javax.swing.*;
 import java.math.BigDecimal;
@@ -17,10 +16,10 @@ public class AccountGui {
         JPanel mainPanel = new JPanel();
 
         JLabel cash = new JLabel(getCurrentAccountBalance(id).toString());
-        JLabel numberAccount = new JLabel("Your account number : ");
-        AccountNumberToDisplayDB accountNumberToDisplayDB = new AccountNumberToDisplayDB();
-        JLabel accountNumber = new JLabel(accountNumberToDisplayDB.showAccountNumber(id));
-        JLabel cashOnAccount = new JLabel("Cash on your account: ");
+        JLabel numberAccount = new JLabel("Your model.account number : ");
+        AccountInformationFetcher accountInformationFetcher = new AccountInformationFetcher();
+        JLabel accountNumber = new JLabel(accountInformationFetcher.getUserAccountNumber(id));
+        JLabel cashOnAccount = new JLabel("Cash on your model.account: ");
 
         JButton transferButton = new JButton("transfer");
         transferButton.addActionListener(actionEvent -> TransferGui.createTransferGui(getCurrentAccountBalance(id),id,cash));
@@ -32,7 +31,11 @@ public class AccountGui {
         depositButton.addActionListener(actionEvent -> DepositGui.createDepositGui(id,cash));
 
         JButton checkTransferHistoryButton = new JButton("check History");
-        checkTransferHistoryButton.addActionListener(actionEvent -> HistoryGui.createTable(id));
+                checkTransferHistoryButton.addActionListener(actionEvent -> {
+                    HistoryGui gui = new HistoryGui(id);
+                    gui.createTable();
+                });
+//        checkTransferHistoryButton.addActionListener(actionEvent -> HistoryGui.createTable(id));
 
         mainPanel.add(cashOnAccount);
         mainPanel.add(cash);
@@ -48,7 +51,7 @@ public class AccountGui {
         frame.setVisible(true);
     }
     public static BigDecimal getCurrentAccountBalance(int id) {
-        AccountCashToDisplayDB ac = new AccountCashToDisplayDB();
+        AccountInformationFetcher ac = new AccountInformationFetcher();
         return ac.getCurrentCash(id).setScale(2, RoundingMode.CEILING);
     }
 }

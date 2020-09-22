@@ -1,12 +1,15 @@
 package gui.account;
 
-import Regex.Regex;
-import account.TransactionChecker;
-import account.TransactionType;
-import account.Transfer;
+import model.validation.Validator;
+import model.domain.transaction.TransactionChecker;
+import model.domain.transaction.TransactionType;
+import data_base.TransferDB;
 
 import javax.swing.*;
 import java.math.BigDecimal;
+import java.util.Optional;
+
+import static javax.swing.JOptionPane.showMessageDialog;
 
 public class CreditCardGui {
     private final static String OPERATION_TYPE = "credit card";
@@ -20,13 +23,18 @@ public class CreditCardGui {
         JTextField creditCardCashText = new JTextField(20);
         JButton confirmButton = new JButton("confirm");
         confirmButton.addActionListener(actionEvent -> {
-            Regex regex = new Regex();
-            if (regex.checkCash(creditCardCashText.getText()) == true) {
-                BigDecimal cashBigDecimal = TransactionChecker.checkFoundsOnAccount(allCashOnAccount, creditCardCashText.getText());
-                Transfer transfer = new Transfer(userId, userId, TransactionType.CREDIT_CARD, cashBigDecimal, TITLE);
-                transfer.createTransfer();
-                labelCash.setText(AccountGui.getCurrentAccountBalance(userId).toString());
-                frame.dispose();
+            Validator validator = new Validator();
+            if (validator.checkCash(creditCardCashText.getText())) {
+                Optional<BigDecimal> cashBigDecimal = TransactionChecker.checkFoundsOnAccount(allCashOnAccount, creditCardCashText.getText());
+                if (cashBigDecimal.isPresent()) {
+                    TransferDB transferDB = new TransferDB(userId, userId, TransactionType.CREDIT_CARD, cashBigDecimal.get(), TITLE);
+                    transferDB.createTransfer();
+                    labelCash.setText(AccountGui.getCurrentAccountBalance(userId).toString());
+                    frame.dispose();
+                }
+                else {
+                    showMessageDialog(null, "you cannot withdraw money insufficient funds in your model.account");
+                }
             }
             else {
                 JOptionPane.showMessageDialog(null, "the wrong amount was entered");

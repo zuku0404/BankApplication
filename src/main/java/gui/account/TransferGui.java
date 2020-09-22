@@ -1,12 +1,15 @@
 package gui.account;
 
-import Regex.Regex;
-import account.TransactionChecker;
-import account.TransactionType;
-import account.Transfer;
+import model.validation.Validator;
+import model.domain.transaction.TransactionChecker;
+import model.domain.transaction.TransactionType;
+import data_base.TransferDB;
 
 import javax.swing.*;
 import java.math.BigDecimal;
+import java.util.Optional;
+
+import static javax.swing.JOptionPane.showMessageDialog;
 
 public class TransferGui {
     private final static String OPERATION_TYPE = "transfer";
@@ -27,10 +30,10 @@ public class TransferGui {
         JButton transferButton = new JButton("make a transfer");
 
         transferButton.addActionListener(actionEvent -> {
-            Regex regex = new Regex();
-            boolean firstCondition = regex.checkCash(cashText.getText());
-            boolean secondCondition = regex.checkTitle(titleText.getText());
-            boolean thirdCondition = regex.checkIdUserRecipient(idRecipientText.getText());
+            Validator validator = new Validator();
+            boolean firstCondition = validator.checkCash(cashText.getText());
+            boolean secondCondition = validator.checkTitle(titleText.getText());
+            boolean thirdCondition = validator.checkIdUserRecipient(idRecipientText.getText());
 
             if (!firstCondition) {
                 JOptionPane.showMessageDialog(null, "the wrong amount was entered");
@@ -42,13 +45,18 @@ public class TransferGui {
                 JOptionPane.showMessageDialog(null, "something wrong with recipient id");
             }
             else {
-                BigDecimal cashBigDecimal = TransactionChecker.checkFoundsOnAccount(allCashOnAccount, cashText.getText());
-                Transfer transfer = new Transfer(userId, Integer.parseInt(idRecipientText.getText()), TransactionType.TRANSFER,
-                        cashBigDecimal, titleText.getText());
-                transfer.createTransfer();
-                labelCash.setText(AccountGui.getCurrentAccountBalance(userId).toString());
-                frame.dispose();
-            }
+                   Optional<BigDecimal> cashBigDecimal = TransactionChecker.checkFoundsOnAccount(allCashOnAccount, cashText.getText());
+                  if (cashBigDecimal.isPresent()) {
+                      TransferDB transferDB = new TransferDB(userId, Integer.parseInt(idRecipientText.getText()), TransactionType.TRANSFER,
+                              cashBigDecimal.get(), titleText.getText());
+                      transferDB.createTransfer();
+                      labelCash.setText(AccountGui.getCurrentAccountBalance(userId).toString());
+                      frame.dispose();
+                  }
+                  else {
+                      showMessageDialog(null, "you cannot withdraw money insufficient funds in your model.account");
+                  }
+               }
         });
 
         JPanel firstPanel = new JPanel();

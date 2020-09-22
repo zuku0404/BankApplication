@@ -1,13 +1,13 @@
 package data_base.login;
 
-import account.cipher.CaesarDecipher;
+import model.cipher.CaesarDecipher;
 import data_base.ConnectionUtil;
 
 import java.sql.*;
 
 public class PasswordCheckerDB {
     public boolean checkPassword(String login, String password) {
-        String downloadPassword = "SELECT PASSWORD FROM ACCOUNT JOIN USERS ON Users.ID = account.ID WHERE Users.login = ? ";
+        String downloadPassword = "SELECT PASSWORD FROM ACCOUNT JOIN USERS ON Users.ID = model.account.ID WHERE Users.login = ? ";
         Connection connection = ConnectionUtil.createConnection();
         try {
             PreparedStatement ps = connection.prepareStatement(downloadPassword);

@@ -1,7 +1,7 @@
 package gui.login;
 
 import gui.register.SignUpGui;
-import account.UserLogPasChecker;
+import model.domain.userLog.UserLogPasChecker;
 
 import javax.swing.*;
 

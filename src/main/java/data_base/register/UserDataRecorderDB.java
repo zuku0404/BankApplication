@@ -1,7 +1,7 @@
 package data_base.register;
 
 import data_base.ConnectionUtil;
-import account.User;
+import model.domain.userLog.User;
 
 import java.sql.*;
 
