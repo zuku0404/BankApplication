@@ -25,13 +25,11 @@ public class UserDataRecorderDB {
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
-            if (connection != null) {
                 try {
                     connection.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-            }
         }
     }
 }

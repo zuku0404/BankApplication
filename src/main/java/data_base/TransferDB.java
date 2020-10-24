@@ -39,6 +39,12 @@ public class TransferDB {
             rs.next();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                connect.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

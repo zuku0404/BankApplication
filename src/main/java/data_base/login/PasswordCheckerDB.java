@@ -1,9 +1,12 @@
 package data_base.login;
 
-import model.cipher.CaesarDecipher;
 import data_base.ConnectionUtil;
+import model.cipher.CaesarDecipher;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class PasswordCheckerDB {
     public boolean checkPassword(String login, String password) {
@@ -20,12 +23,10 @@ public class PasswordCheckerDB {
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
-            if (connection != null) {
                 try {
                     connection.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
-                }
             }
         }
         return false;
