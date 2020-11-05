@@ -24,10 +24,11 @@ public class TransferDB {
     public void createTransfer() {
 
         Connection connect = ConnectionUtil.createConnection();
+        PreparedStatement ps = null;
         String query = "Insert into TRANSFER (ID_USER, ID_USER_RECIPIENT, TRANSFER_TYPE, TRANSFER_CASH," +
                 " TITLE) values(?,?,?,?,?) ";
         try {
-            PreparedStatement ps = connect.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            ps = connect.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, idUser);
             ps.setInt(2, idUserRecipient);
             ps.setString(3, transactionType);
@@ -44,6 +45,13 @@ public class TransferDB {
                 connect.close();
             } catch (SQLException e) {
                 e.printStackTrace();
+            }
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+            } catch (SQLException sqlexp) {
+                sqlexp.printStackTrace();
             }
         }
     }

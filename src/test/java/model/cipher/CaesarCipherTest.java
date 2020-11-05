@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 class CaesarCipherTest {
     @ParameterizedTest
     @MethodSource("data")
-    void encryptPassword_inputFromData_resultAsInData (String password, String expectedResult){
+    void encryptPassword_nonEncryptedInput_encryptedOutput (String password, String expectedResult){
         //given
         CaesarCipher caesarCipher = new CaesarCipher();
         //when

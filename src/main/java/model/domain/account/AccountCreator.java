@@ -29,4 +29,15 @@ public class AccountCreator {
     }
         return bld.toString();
     }
+
+     String generateAccountNumber2() {
+        AccountFinderDB accountFinderDB = new AccountFinderDB();
+        for (int i = 0; i< 30; i++) {
+            String newAccountNumber = createRandomAccountNumber();
+            if (accountFinderDB.checkIfAccountNumberIsAvailable(newAccountNumber)) {
+                return newAccountNumber;
+            }
+        }
+        throw new IllegalStateException();   // TODO zwrocic Exception
+    }
 }

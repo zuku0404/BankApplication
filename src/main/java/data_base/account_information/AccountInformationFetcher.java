@@ -16,8 +16,9 @@ public class AccountInformationFetcher {
         String numberAccount = "";
         String query = "Select * from USERS where ID = ?";
         Connection connect = ConnectionUtil.createConnection();
+        PreparedStatement ps = null;
         try {
-            PreparedStatement ps = connect.prepareStatement(query);
+            ps = connect.prepareStatement(query);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             rs.next();
@@ -31,6 +32,13 @@ public class AccountInformationFetcher {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+            } catch (SQLException sqlexp) {
+                sqlexp.printStackTrace();
+            }
         }
         return numberAccount;
     }
@@ -38,8 +46,9 @@ public class AccountInformationFetcher {
     public BigDecimal getCurrentCash(int id) {
         String query = "SELECT SUM(TRANSFER_CASH) FROM TRANSFER Where id_user = ?";
         Connection connect = ConnectionUtil.createConnection();
+        PreparedStatement ps = null;
         try {
-            PreparedStatement ps = connect.prepareStatement(query);
+            ps = connect.prepareStatement(query);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             rs.next();
@@ -52,6 +61,13 @@ public class AccountInformationFetcher {
                 connect.close();
             } catch (SQLException e) {
                 e.printStackTrace();
+            }
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+            } catch (SQLException sqlexp) {
+                sqlexp.printStackTrace();
             }
         }
     }
@@ -68,8 +84,9 @@ public class AccountInformationFetcher {
                 " WHERE ID_USER = ? " +
                 " ORDER BY ID_TRANSFER DESC";
         Connection connect = ConnectionUtil.createConnection();
+        PreparedStatement ps = null;
         try {
-            PreparedStatement ps = connect.prepareStatement(query2);
+            ps = connect.prepareStatement(query2);
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) { // (&& historyUserList.size() < 20)
@@ -91,6 +108,13 @@ public class AccountInformationFetcher {
                 connect.close();
             } catch (SQLException e) {
                 e.printStackTrace();
+            }
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+            } catch (SQLException sqlexp) {
+                sqlexp.printStackTrace();
             }
         }
         return historyUserList;

@@ -1,34 +1,36 @@
 package model.validation;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.params.provider.Arguments.of;
+
 class ValidatorTest {
+    // given for all
+    Validator validator = new Validator(); //TODO usunac wszedzie validatory w metodach
     @ParameterizedTest
     @MethodSource("dataCash")
     void checkCash_cashFromData_resultAsInData(String cash, boolean expectedResult) {
-        //given
-        Validator validator = new Validator();
         //when
         boolean result = validator.checkCash(cash);
         //then
-        Assertions.assertEquals(result, expectedResult);
+        assertEquals(result, expectedResult);
     }
 
     private static Stream<Arguments> dataCash() {
-        return Stream.of(Arguments.of("123", true),
-                Arguments.of("123,23", true),
-                Arguments.of("123.54", true),
-                Arguments.of("123.245", false),
-                Arguments.of("sadsad", false),
-                Arguments.of("1223332231321", true),
-                Arguments.of("1223332231321,2332", false),
-                Arguments.of("1a", false),
-                Arguments.of("", false)
+        return Stream.of(of("123", true),
+                of("123,23", true),
+                of("123.54", true),
+                of("123.245", false),
+                of("sadsad", false),
+                of("1223332231321", true),
+                of("1223332231321,2332", false),
+                of("1a", false),
+                of("", false)
         );
     }
 
@@ -41,15 +43,15 @@ class ValidatorTest {
         //when
         boolean result = validator.checkTitle(title);
         //then
-        Assertions.assertEquals(result, expectedResult);
+        assertEquals(result, expectedResult);
     }
 
     private static Stream<Arguments> dataTitle() {
-        return Stream.of(Arguments.of("trakaka", true),
-                Arguments.of("", false),
-                Arguments.of("t", true),
-                Arguments.of(" ", false),
-                Arguments.of("to musi dzialac ", true)
+        return Stream.of(of("trakaka", true),
+                of("", false),
+                of("t", true),
+                of(" ", false),
+                of("to musi dzialac ", true)
         );
     }
 
@@ -62,22 +64,22 @@ class ValidatorTest {
         //when
         boolean result = validator.checkIdUserRecipient(id);
         //then
-        Assertions.assertEquals(result, exceptedResult);
+        assertEquals(result, exceptedResult);
     }
 
     private static Stream<Arguments> dataUserRecipient() {
-        return Stream.of(Arguments.of("12", true),
-                Arguments.of("ads", false),
-                Arguments.of("12 ", false),
-                Arguments.of("1a", false),
-                Arguments.of("12,3", false),
-                Arguments.of("", false),
-                Arguments.of("12!", false),
-                Arguments.of("-1", false),
-                Arguments.of("1", true),
-                Arguments.of("0", false),
-                Arguments.of("01", false),
-                Arguments.of("10", true)
+        return Stream.of(of("12", true),
+                of("ads", false),
+                of("12 ", false),
+                of("1a", false),
+                of("12,3", false),
+                of("", false),
+                of("12!", false),
+                of("-1", false),
+                of("1", true),
+                of("0", false),
+                of("01", false),
+                of("10", true)
         );
     }
 
@@ -90,17 +92,17 @@ class ValidatorTest {
         //when
         boolean result = validator.checkPassword(password);
         //then
-        Assertions.assertEquals(result, expectResult);
+        assertEquals(result, expectResult);
     }
 
     private static Stream<Arguments> dataPassword() {
-        return Stream.of(Arguments.of("asdasS@12s", true),
-                Arguments.of("asdasS12s", false),
-                Arguments.of("asdas@12s", false),
-                Arguments.of("asdasS", false),
-                Arguments.of("asdasSSfddf@a", false),
-                Arguments.of("asdasS@1", true),
-                Arguments.of("asdasSSf@2ds    ddf@a", false)
+        return Stream.of(of("asdasS@12s", true),
+                of("asdasS12s", false),
+                of("asdas@12s", false),
+                of("asdasS", false),
+                of("asdasSSfddf@a", false),
+                of("asdasS@1", true),
+                of("asdasSSf@2ds    ddf@a", false)
         );
     }
 
@@ -113,17 +115,17 @@ class ValidatorTest {
         // when
         boolean result = validator.checkLogin(login);
         //then
-        Assertions.assertEquals(result, expectedResult);
+        assertEquals(result, expectedResult);
     }
 
     private static Stream<Arguments> dataLogin() {
-        return Stream.of(Arguments.of("Mama", false),
-                Arguments.of("321dscMama", true),
-                Arguments.of("Mama ma Kota", false),
-                Arguments.of("MamaMusi", true),
-                Arguments.of("mamaMusi", true),
-                Arguments.of("mAma", false),
-                Arguments.of("Mama sds", false)
+        return Stream.of(of("Mama", false),
+                of("321dscMama", true),
+                of("Mama ma Kota", false),
+                of("MamaMusi", true),
+                of("mamaMusi", true),
+                of("mAma", false),
+                of("Mama sds", false)
         );
     }
 
@@ -136,18 +138,18 @@ class ValidatorTest {
         // when
         boolean result = validator.checkNameSurname(nameSurname);
         // then
-        Assertions.assertEquals(result, expectedResult);
+        assertEquals(result, expectedResult);
     }
 
     private static Stream<Arguments> dataNameSurname() {
-        return Stream.of(Arguments.of("Ewa", true),
-                Arguments.of("Ewa konewa", false),
-                Arguments.of("Ew", true),
-                Arguments.of("E", false),
-                Arguments.of("sdawa", false),
-                Arguments.of("sdAwa", false),
-                Arguments.of("WsdadA", false),
-                Arguments.of("Sdawa32", false)
+        return Stream.of(of("Ewa", true),
+                of("Ewa konewa", false),
+                of("Ew", true),
+                of("E", false),
+                of("sdawa", false),
+                of("sdAwa", false),
+                of("WsdadA", false),
+                of("Sdawa32", false)
         );
     }
 
@@ -160,18 +162,18 @@ class ValidatorTest {
         //when
         boolean result = validator.checkDataOfBirth(date);
         //then
-        Assertions.assertEquals(result, expectedResult);
+        assertEquals(result, expectedResult);
     }
 
     private static Stream<Arguments> dataBirth() {
-        return Stream.of(Arguments.of("12-02-2020", true),
-                Arguments.of("12-13-2020", true),
-                Arguments.of("12 02 2020", false),
-                Arguments.of("12.02.2020", false),
-                Arguments.of("2020-12-3", false),
-                Arguments.of("2020-22-3", false),
-                Arguments.of("12-13-2020", true),
-                Arguments.of("12-13-3020", false)
+        return Stream.of(of("12-02-2020", true),
+                of("12-13-2020", true),
+                of("12 02 2020", false),
+                of("12.02.2020", false),
+                of("2020-12-3", false),
+                of("2020-22-3", false),
+                of("12-13-2020", true),
+                of("12-13-3020", false)
         );
     }
 
@@ -183,14 +185,14 @@ class ValidatorTest {
         // when
         boolean result = validator.checkPesel(pesel);
         //then
-        Assertions.assertEquals(result, expectedResult);
+        assertEquals(result, expectedResult);
     }
 
     private static Stream<Arguments> dataPesel() {
-        return Stream.of(Arguments.of("11123456789", true),
-                Arguments.of("123456789343242", false),
-                Arguments.of("12345678", false),
-                Arguments.of("1s23456789", false)
+        return Stream.of(of("11123456789", true),
+                of("123456789343242", false),
+                of("12345678", false),
+                of("1s23456789", false)
         );
     }
 }

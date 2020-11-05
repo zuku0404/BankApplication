@@ -18,7 +18,7 @@ public class AccountDataRecorderDB {
             ResultSet rs = ps.getGeneratedKeys();
             rs.next();
 
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {
             try {
@@ -26,6 +26,13 @@ public class AccountDataRecorderDB {
 
             } catch (SQLException e) {
                 e.printStackTrace();
+            }
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+            } catch (SQLException sqlexp) {
+                sqlexp.printStackTrace();
             }
         }
     }

@@ -5,6 +5,7 @@ import data_base.ConnectionUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class AccountFinderDB {
     public boolean checkIfAccountNumberIsAvailable(String newAccount) {
@@ -26,6 +27,13 @@ public class AccountFinderDB {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            try {
+                if (pst != null) {
+                    pst.close();
+                }
+            } catch (SQLException sqlexp) {
+                sqlexp.printStackTrace();
+            }
         }
         return true;
     }

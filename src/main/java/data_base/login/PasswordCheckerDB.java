@@ -12,8 +12,9 @@ public class PasswordCheckerDB {
     public boolean checkPassword(String login, String password) {
         String downloadPassword = "SELECT PASSWORD FROM ACCOUNT JOIN USERS ON Users.ID = model.account.ID WHERE Users.login = ? ";
         Connection connection = ConnectionUtil.createConnection();
+        PreparedStatement ps = null;
         try {
-            PreparedStatement ps = connection.prepareStatement(downloadPassword);
+            ps = connection.prepareStatement(downloadPassword);
             ps.setString(1,login);
             ResultSet rs = ps.executeQuery();
             rs.next();
@@ -27,6 +28,13 @@ public class PasswordCheckerDB {
                     connection.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
+            }
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+            } catch (SQLException sqlexp) {
+                sqlexp.printStackTrace();
             }
         }
         return false;
