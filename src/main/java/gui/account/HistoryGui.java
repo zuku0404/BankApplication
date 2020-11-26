@@ -1,5 +1,6 @@
 package gui.account;
 
+import controller.HistoryController;
 import data_base.account_information.AccountInformationFetcher;
 import model.domain.transaction.Transfer;
 
@@ -10,15 +11,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class HistoryGui {
+    private final HistoryController controller = new HistoryController();
+    private final int userId;
 
-    private int userId;
-    private List<Transfer> filteredTransfers;
-
-    AccountInformationFetcher userHistory = new AccountInformationFetcher();
-    String header[] = new String[]{"user name", "user surname", "recipient name", "recipient surname ",
+    private final String[] header = new String[]{"user name", "user surname", "recipient name", "recipient surname ",
             " type of transfer", "cash", "transfer title"};
-    DefaultTableModel dtm = new DefaultTableModel();
-    JTable table = new JTable(dtm);
+
+    private final String[] transferKindChooser = {"deposit", "credit card", "transfer"};
+
+    private DefaultTableModel dtm = new DefaultTableModel();
+    private JTable table = new JTable(dtm);
 
     public HistoryGui(int userId) {
         this.userId = userId;
@@ -30,16 +32,14 @@ public class HistoryGui {
         JPanel upPanel = new JPanel();
         JPanel downPanel = new JPanel();
 
-        String[] transferKindChooser = {"deposit", "credit card", "transfer"};
+
         JComboBox kindOfTransfer = new JComboBox(transferKindChooser);
         kindOfTransfer.addActionListener(actionEvent -> {
             String kindOfAction = kindOfTransfer.getSelectedItem().toString();
-            filteredTransfers = userHistory.getHistory(userId, kindOfAction).stream()
-                    .collect(Collectors.toList());
+            List<Transfer> filteredTransfers = controller.getFilteredTransfers(userId, kindOfAction);
+
             clearData();
-            if (!filteredTransfers.isEmpty()) {
-                showData();
-            }
+            showData(filteredTransfers);
         });
         JLabel kindOfTransferLabel = new JLabel(" kind of transfer");
         JScrollPane scrollPane = new JScrollPane(table);
@@ -57,7 +57,7 @@ public class HistoryGui {
         frame.setSize(600, 1000);
     }
 
-    private void showData() {
+    private void showData(List<Transfer> filteredTransfers) {
         for (int count = 0; count < filteredTransfers.size(); count++) {
             dtm.setColumnIdentifiers(header);// add header in table model
             dtm.addRow(new Object[]{filteredTransfers.get(count).getUserName(), filteredTransfers.get(count).getUserSurname(),

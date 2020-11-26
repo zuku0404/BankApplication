@@ -75,7 +75,7 @@ public class AccountInformationFetcher {
         }
     }
 
-    public List<Transfer> getHistory(int userId, String kindOfAction) {
+    public List<Transfer> getHistoryForSpecificTransferType(int userId, String kindOfAction) {
         List<Transfer> historyUserList = new ArrayList<>();
         String query2 = "SELECT name_mod.name  Name_Owner, surname_modi.surname Surname_owner , name_mod2.name NAME_RECIPIENT ," +
                 " surname_mod2.surname SURNAME_RECIPIENT, TRANSFER_TYPE, TRANSFER_CASH, TITLE\n" +
