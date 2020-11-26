@@ -4,12 +4,13 @@ import javax.swing.*;
 import java.util.List;
 
 public class Converter {
-    private JTextField login;
-    private JTextField password;
-    private JTextField pesel;
-    private JTextField dateOfBirth;
-    private JTextField name;
-    private JTextField surname;
+    private String login;
+    private String password;
+    private String pesel;
+    private String dateOfBirth;
+    private String name;
+    private String surname;
+
     private JTextArea errorLogin;
     private JTextArea errorPassword;
     private JTextArea errorName;
@@ -17,16 +18,17 @@ public class Converter {
     private JTextArea errorDateOfBirth;
     private JTextArea errorPesel;
 
-    public Converter(JTextField login, JTextField password, JTextField pesel, JTextField dateOfBirth, JTextField name,
+    public Converter(JTextField login, JPasswordField password, JTextField pesel, JTextField dateOfBirth, JTextField name,
                      JTextField surname, JTextArea errorLogin, JTextArea errorPassword, JTextArea errorName,
                      JTextArea errorSurname, JTextArea errorDateOfBirth, JTextArea errorPesel) {
 
-        this.login = login;
-        this.password = password;
-        this.pesel = pesel;
-        this.dateOfBirth = dateOfBirth;
-        this.name = name;
-        this.surname = surname;
+        this.login = login.getText();
+        this.password = password.getText();
+        this.pesel = pesel.getText();
+        this.dateOfBirth = dateOfBirth.getText();
+        this.name = name.getText();
+        this.surname = surname.getText();
+
         this.errorLogin = errorLogin;
         this.errorPassword = errorPassword;
         this.errorName = errorName;
@@ -35,9 +37,9 @@ public class Converter {
         this.errorPesel = errorPesel;
     }
 
-    public void createAccountOrShowError() {
-        CorrectnessUserDataChecker user = new CorrectnessUserDataChecker(login.getText(), password.getText(), pesel.getText(), dateOfBirth.getText(),
-                name.getText(), surname.getText());
+    public boolean createAccountOrShowErrors() {
+        CorrectnessUserDataChecker user = new CorrectnessUserDataChecker(login, password, pesel, dateOfBirth,
+                name, surname);
         List<String> textSetter = user.checkValidationData();
 
         errorLogin.setText(textSetter.get(0));
@@ -46,5 +48,12 @@ public class Converter {
         errorSurname.setText(textSetter.get(3));
         errorDateOfBirth.setText(textSetter.get(4));
         errorPesel.setText(textSetter.get(5));
+
+        for (String s : textSetter) {
+            if (!s.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
     }
 }

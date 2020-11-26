@@ -8,12 +8,7 @@ public class Account {
         this.number = number;
         this.cash = cash;
     }
-
     public String getNumber() {
         return number;
-    }
-
-    public double getCash() {
-        return cash;
     }
 }

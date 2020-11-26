@@ -1,6 +1,7 @@
 package gui.account;
 
 import data_base.TransferDB;
+import model.domain.account.CurrentAccountBalance;
 import model.validation.Validator;
 
 import javax.swing.*;
@@ -16,7 +17,7 @@ public class DepositGui {
         JFrame frame = new JFrame();
         JPanel mainPanel = new JPanel();
 
-        JLabel depositCash = new JLabel("amount deposited into the model.account ");
+        JLabel depositCash = new JLabel("amount deposited into the account ");
         JTextField depositCashText = new JTextField(20);
         JButton confirmButton = new JButton("confirm");
         confirmButton.addActionListener(actionEvent -> {
@@ -25,7 +26,8 @@ public class DepositGui {
                 BigDecimal depositCashDecimal = new BigDecimal(depositCashText.getText());
                 TransferDB transferDB = new TransferDB(userId, userId, DEPOSIT, depositCashDecimal, TITLE);
                 transferDB.createTransfer();
-                labelCash.setText(AccountGui.getCurrentAccountBalance(userId).toString());
+                CurrentAccountBalance currentAccountBalance = new CurrentAccountBalance();
+                labelCash.setText(currentAccountBalance.getCurrentAccountBalance(userId).toString());
                 frame.dispose();
             } else {
                 JOptionPane.showMessageDialog(null, "the wrong amount was entered");

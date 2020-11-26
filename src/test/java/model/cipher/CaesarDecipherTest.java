@@ -11,7 +11,7 @@ class CaesarDecipherTest {
     @ParameterizedTest
     @MethodSource("data")
     public void decryptPassword_encryptedInput_nonEncryptedOutput(String exceptedResult, String password) {
-        CaesarDecipher cd = new CaesarDecipher();
+        CaesarCipher cd = new CaesarCipher();
         String decryptedPassword = cd.decryptPassword(password);
         Assertions.assertEquals(exceptedResult, decryptedPassword);
     }

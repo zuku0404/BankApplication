@@ -52,7 +52,10 @@ public class AccountInformationFetcher {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             rs.next();
-            return rs.getBigDecimal("SUM(TRANSFER_CASH)");
+            if (rs.getBigDecimal("SUM(TRANSFER_CASH)") == null) {
+                return BigDecimal.ZERO;
+            } else
+                return rs.getBigDecimal("SUM(TRANSFER_CASH)");
         } catch (Exception ex) {
             ex.printStackTrace();
             return BigDecimal.ZERO;
@@ -71,7 +74,6 @@ public class AccountInformationFetcher {
             }
         }
     }
-
     public List<Transfer> getHistory(int userId) {
         List<Transfer> historyUserList = new ArrayList<>();
         String query2 = "SELECT name_mod.name  Name_Owner, surname_modi.surname Surname_owner , name_mod2.name NAME_RECIPIENT ," +

@@ -26,7 +26,8 @@ public class SignUpGui  {
         errorLogin.setOpaque(false);
 
         JLabel passwordLabel = new JLabel("Password: ");
-        JTextField passwordText = new JTextField(25);
+        JPasswordField passwordText = new JPasswordField(25);
+        passwordText.setEchoChar('*');
         JTextArea errorPassword = new JTextArea("",2,40);
         errorPassword.setLineWrap(true);
         errorPassword.setWrapStyleWord(true);
@@ -65,12 +66,14 @@ public class SignUpGui  {
         errorDateOfBirth.setForeground(Color.RED);
         errorDateOfBirth.setOpaque(false);
 
-
         JButton createAccount = new JButton("create");
         createAccount.addActionListener(actionEvent -> {
             Converter converter = new Converter(loginText, passwordText, peselText, dateOfBirthText, nameText, surnameText,
                 errorLogin,errorPassword,errorName,errorSurname,errorDateOfBirth,errorPesel);
-            converter.createAccountOrShowError();
+            if (converter.createAccountOrShowErrors()) {
+                JOptionPane.showMessageDialog(frame, "Account has been created");
+                frame.dispose();
+            }
         });
         panel.setLayout(new GridLayout(0, 1));
 

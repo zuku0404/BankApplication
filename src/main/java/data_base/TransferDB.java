@@ -22,12 +22,12 @@ public class TransferDB {
     }
 
     public void createTransfer() {
-
-        Connection connect = ConnectionUtil.createConnection();
+        Connection connect = null;
         PreparedStatement ps = null;
         String query = "Insert into TRANSFER (ID_USER, ID_USER_RECIPIENT, TRANSFER_TYPE, TRANSFER_CASH," +
                 " TITLE) values(?,?,?,?,?) ";
         try {
+            connect = ConnectionUtil.createConnection();
             ps = connect.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, idUser);
             ps.setInt(2, idUserRecipient);

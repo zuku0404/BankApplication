@@ -7,10 +7,13 @@ import java.sql.*;
 
 public class AccountDataRecorderDB {
     public void sendAccountDateToServer(User user) {
+
         String userData = "Insert into account (PASSWORD) values (?)";
-        Connection connection = ConnectionUtil.createConnection();
+        Connection connection = null;
         PreparedStatement ps = null;
         try {
+            connection = ConnectionUtil.createConnection();
+            ps = connection.prepareStatement(userData);
             ps = connection.prepareStatement(userData, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, user.getPassword());
             ps.addBatch();
@@ -22,7 +25,9 @@ public class AccountDataRecorderDB {
             ex.printStackTrace();
         } finally {
             try {
-                connection.close();
+                if (connection != null) {
+                    connection.close();
+                }
 
             } catch (SQLException e) {
                 e.printStackTrace();

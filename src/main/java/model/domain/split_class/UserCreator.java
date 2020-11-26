@@ -10,16 +10,22 @@ import model.domain.userLog.User;
 
 public class UserCreator {
     public void createUser(String login, String password,String name,String surname,String dateOfBirth, String pesel){
+        Pesel peselNumber = new Pesel(pesel);
 
-        Pesel peselNumber = Pesel.validateAndCreate(pesel, dateOfBirth);
         AccountCreator newAccount = new AccountCreator();
         Account account = newAccount.createAccount();
+
         CaesarCipher cipher = new CaesarCipher();
         String encryptedPassword = cipher.encryptPassword(password);
-        User user = new User(name, surname, account, peselNumber, login, encryptedPassword, dateOfBirth);
-        AccountDataRecorderDB adr = new AccountDataRecorderDB();
-        adr.sendAccountDateToServer(user);
+
+        User newUser = new User(name, surname, account, peselNumber, login, encryptedPassword, dateOfBirth);
+
         UserDataRecorderDB udr = new UserDataRecorderDB();
-        udr.sendUserDateToServer(user);
+        udr.sendUserDateToServer(newUser);
+
+        AccountDataRecorderDB adr = new AccountDataRecorderDB();
+        adr.sendAccountDateToServer(newUser);
+
+
     }
 }

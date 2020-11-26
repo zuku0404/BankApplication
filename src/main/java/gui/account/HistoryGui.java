@@ -10,8 +10,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class HistoryGui {
-    private int userId;
+    public static void main(String[] args) {
+        HistoryGui hg = new HistoryGui(13);
+        hg.createTable();
+    }
 
+    private int userId;
     private List<Transfer> listOfData;
     AccountInformationFetcher userHistory = new AccountInformationFetcher();
     private List<Transfer> filteredTransfers;
@@ -24,16 +28,21 @@ public class HistoryGui {
         this.listOfData = userHistory.getHistory(userId);
         this.filteredTransfers = listOfData;
     }
-
     public void createTable() {
         JFrame frame = new JFrame();
         JPanel panel = new JPanel();
         JPanel upPanel = new JPanel();
         JPanel  downPanel = new JPanel();
+
         String[] transferKindChooser = {"deposit", "credit card", "transfer", "all expenses", "all transaction"};
         JComboBox kindOfTransfer = new JComboBox(transferKindChooser);
         kindOfTransfer.addActionListener(actionEvent -> {
-            filterData(kindOfTransfer.getSelectedItem().toString());
+//            filterData(kindOfTransfer.getSelectedItem().toString());
+            String selected = kindOfTransfer.getSelectedItem().toString();
+            filteredTransfers = filteredTransfers.stream()
+                    .filter(transfer -> transfer.getTransferType().equals(selected))
+                    .collect(Collectors.toList());
+            showData();
         });
         JLabel kindOfTransferLabel = new JLabel(" kind of transfer");
 
@@ -53,6 +62,7 @@ public class HistoryGui {
         panel.add(downPanel);
         upPanel.add(kindOfTransferLabel);
         upPanel.add(kindOfTransfer);
+
         table.setFillsViewportHeight(true);
         scrollPane.setPreferredSize(new Dimension(800,600));
         frame.setVisible(true);
@@ -67,10 +77,10 @@ public class HistoryGui {
                     filteredTransfers.get(count).getTitle()}); // add row dynamically into the table
         }
     }
-    public void filterData (String kindOfTransaction){
-        filteredTransfers = filteredTransfers.stream()
-                .filter(transfer -> transfer.getTransferType().equals(kindOfTransaction))
-                .collect(Collectors.toList());
-        showData();
-    }
+//    public void filterData (String kindOfTransaction){
+//        filteredTransfers = filteredTransfers.stream()
+//                .filter(transfer -> transfer.getTransferType().equals(kindOfTransaction))
+//                .collect(Collectors.toList());
+//        showData();
+//    }
 }

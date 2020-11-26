@@ -1,7 +1,7 @@
 package data_base.login;
 
 import data_base.ConnectionUtil;
-import model.cipher.CaesarDecipher;
+import model.cipher.CaesarCipher;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,9 +10,9 @@ import java.sql.SQLException;
 
 public class PasswordCheckerDB {
     public boolean checkPassword(String login, String password) {
-        String downloadPassword = "SELECT PASSWORD FROM ACCOUNT JOIN USERS ON Users.ID = model.account.ID WHERE Users.login = ? ";
+        String downloadPassword = "SELECT PASSWORD FROM ACCOUNT JOIN USERS ON Users.ID = account.ID WHERE Users.login = ? ";
         Connection connection = ConnectionUtil.createConnection();
-        CaesarDecipher cd = new CaesarDecipher();
+        CaesarCipher cd = new CaesarCipher();
         PreparedStatement ps = null;
         try {
             ps = connection.prepareStatement(downloadPassword);
