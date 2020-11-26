@@ -5,7 +5,8 @@ import java.sql.DriverManager;
 
 public class ConnectionUtil {
     private static final String DRIVER = "org.h2.Driver";
-    private static final String URL = "jdbc:h2:mem:test;INIT=RUNSCRIPT FROM 'file:tablesAndData.sql'";
+    private static final String URL = "jdbc:h2:file:D:/BankProject/example/aplikaBankowaa";
+    //            "jdbc:h2:mem:dupa;INIT=RUNSCRIPT FROM 'file:tablesAndData.sql'";
     private static final String USER = "sa";
     private static final String PASSWORD = "";
 

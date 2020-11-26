@@ -11,7 +11,7 @@ class AccountCreatorTest {
         // given
         AccountCreator ac = new AccountCreator();
         // when
-        String exceptedAccountNumber = ac.generateAccountNumber2();
+        String exceptedAccountNumber = ac.generateAccountNumber();
 
         // then
         assertTrue(exceptedAccountNumber.startsWith("1140"));

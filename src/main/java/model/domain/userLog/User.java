@@ -11,10 +11,7 @@ public class User {
     private String login;
     private String password;
     private String dateOfBirth;
-
-    public User(String pesel){
-        this.name = pesel;
-    }
+    private int userId;
 
     public User(String name, String surname, Account account, Pesel pesel, String login, String password, String dateOfBirth) {
         this.name = name;
@@ -51,4 +48,9 @@ public class User {
     public String getDateOfBirth() {
         return dateOfBirth;
     }
+
+    public int getUserId() {
+        return userId;
+    }
+
 }

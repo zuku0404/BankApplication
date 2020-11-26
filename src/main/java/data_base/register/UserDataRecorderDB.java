@@ -7,7 +7,7 @@ import java.sql.*;
 
 public class UserDataRecorderDB {
     public void sendUserDateToServer(User user) {
-        String userData = "Insert into users (PESEL, NAME, SURNAME, DATE_OF_BIRTH, LOGIN, ACCOUNT_NUMBER) values (?,?,?,?,?,?)";
+        String userData = "Insert into users ( PESEL, NAME, SURNAME, DATE_OF_BIRTH, LOGIN, ACCOUNT_NUMBER) values (?,?,?,?,?,?)";
         Connection connection = ConnectionUtil.createConnection();
         PreparedStatement ps = null;
         try {

@@ -1,6 +1,7 @@
 package gui.account;
 
 import data_base.TransferDB;
+import model.domain.account.CurrentAccountBalance;
 import model.domain.transaction.TransactionChecker;
 import model.domain.transaction.TransactionType;
 import model.validation.Validator;
@@ -29,11 +30,12 @@ public class CreditCardGui {
                 if (cashBigDecimal.isPresent()) {
                     TransferDB transferDB = new TransferDB(userId, userId, TransactionType.CREDIT_CARD, cashBigDecimal.get(), TITLE);
                     transferDB.createTransfer();
-                    labelCash.setText(AccountGui.getCurrentAccountBalance(userId).toString());
+                    CurrentAccountBalance currentAccountBalance = new CurrentAccountBalance();
+                    labelCash.setText(currentAccountBalance.getCurrentAccountBalance(userId).toString());
                     frame.dispose();
                 }
                 else {
-                    showMessageDialog(null, "you cannot withdraw money insufficient funds in your model.account");
+                    showMessageDialog(null, "you cannot withdraw money insufficient funds in your account");
                 }
             }
             else {

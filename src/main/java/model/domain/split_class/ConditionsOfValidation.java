@@ -1,5 +1,6 @@
 package model.domain.split_class;
 
+import model.domain.pesel.PeselChecker;
 import model.validation.Validator;
 
 public class ConditionsOfValidation {
@@ -11,7 +12,6 @@ public class ConditionsOfValidation {
         }
         return "";
 }
-
     public String checkPassword(String password) {
         if (!validator.checkPassword(password)) {
             return ("Your password must contain an uppercase letter, a lowercase letter, a special character " +
@@ -37,10 +37,13 @@ public class ConditionsOfValidation {
         }
         return "";
     }
-    public String checkPesel(String pesel) {
+
+    public String checkPesel(String pesel, String dateOfBirth) {
         if (!validator.checkPesel(pesel)) {
-            return ("format of data is not correct [XX-XX-XXXX]");
+            return ("number of count is incorrect");
+        } else {
+            PeselChecker peselChecker = new PeselChecker(pesel, dateOfBirth);
+            return peselChecker.checkPesel();
         }
-        return "";
     }
 }

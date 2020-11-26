@@ -6,12 +6,11 @@ import java.util.Random;
 
 public class AccountCreator {
 
-    private Random random = new Random();
     public Account createAccount() {
         return new Account(generateAccountNumber(),0.0);
     }
 
-    private String generateAccountNumber() {
+    String generateAccountNumber() {
         AccountFinderDB accountFinderDB = new AccountFinderDB();
         for (int i = 0; i< 30; i++) {
             String newAccountNumber = createRandomAccountNumber();
@@ -19,25 +18,15 @@ public class AccountCreator {
                 return newAccountNumber;
             }
         }
-        return null;   // TODO zwrocic Exception
+        throw new IllegalStateException();
     }
     private String createRandomAccountNumber() {
+        Random random = new Random();
         StringBuilder bld = new StringBuilder();
         bld.append("1140");
         for (int i = 1; i < 23; i++) {
             bld.append((random.nextInt(10)));
     }
         return bld.toString();
-    }
-
-     String generateAccountNumber2() {
-        AccountFinderDB accountFinderDB = new AccountFinderDB();
-        for (int i = 0; i< 30; i++) {
-            String newAccountNumber = createRandomAccountNumber();
-            if (accountFinderDB.checkIfAccountNumberIsAvailable(newAccountNumber)) {
-                return newAccountNumber;
-            }
-        }
-        throw new IllegalStateException();   // TODO zwrocic Exception
     }
 }

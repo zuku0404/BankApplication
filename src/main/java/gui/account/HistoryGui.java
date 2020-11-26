@@ -1,5 +1,6 @@
 package gui.account;
 
+import controller.HistoryController;
 import data_base.account_information.AccountInformationFetcher;
 import model.domain.transaction.Transfer;
 
@@ -10,55 +11,53 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class HistoryGui {
-    private int userId;
+    private final HistoryController controller = new HistoryController();
+    private final int userId;
 
-    private List<Transfer> listOfData;
-    AccountInformationFetcher userHistory = new AccountInformationFetcher();
-    private List<Transfer> filteredTransfers;
-    String header[] = new String[]{"user name", "user surname", "recipient name", "recipient surname ",
+    private final String[] header = new String[]{"user name", "user surname", "recipient name", "recipient surname ",
             " type of transfer", "cash", "transfer title"};
-    DefaultTableModel dtm = new DefaultTableModel();
 
-    public HistoryGui (int userId){
+    private final String[] transferKindChooser = {"deposit", "credit card", "transfer"};
+
+    private DefaultTableModel dtm = new DefaultTableModel();
+    private JTable table = new JTable(dtm);
+
+    public HistoryGui(int userId) {
         this.userId = userId;
-        this.listOfData = userHistory.getHistory(userId);
-        this.filteredTransfers = listOfData;
     }
 
     public void createTable() {
         JFrame frame = new JFrame();
         JPanel panel = new JPanel();
         JPanel upPanel = new JPanel();
-        JPanel  downPanel = new JPanel();
-        String[] transferKindChooser = {"deposit", "credit card", "transfer", "all expenses", "all transaction"};
+        JPanel downPanel = new JPanel();
+
+
         JComboBox kindOfTransfer = new JComboBox(transferKindChooser);
         kindOfTransfer.addActionListener(actionEvent -> {
-            filterData(kindOfTransfer.getSelectedItem().toString());
+            String kindOfAction = kindOfTransfer.getSelectedItem().toString();
+            List<Transfer> filteredTransfers = controller.getFilteredTransfers(userId, kindOfAction);
+
+            clearData();
+            showData(filteredTransfers);
         });
         JLabel kindOfTransferLabel = new JLabel(" kind of transfer");
-
-        JTable table = new JTable() {
-            public boolean isCellEditable(int data, int column) {
-                return false;
-            }
-        };
         JScrollPane scrollPane = new JScrollPane(table);
         table.setFillsViewportHeight(true);
-        table.setModel(dtm); //set model into the table object
-        table.setFillsViewportHeight(true);
-        showData();
+        scrollPane.setPreferredSize(new Dimension(800, 600));
 
         frame.getContentPane().add(panel);
         panel.add(upPanel);
         panel.add(downPanel);
         upPanel.add(kindOfTransferLabel);
         upPanel.add(kindOfTransfer);
-        table.setFillsViewportHeight(true);
-        scrollPane.setPreferredSize(new Dimension(800,600));
+        downPanel.add(scrollPane);
+
         frame.setVisible(true);
-        frame.setSize(600,1000);
+        frame.setSize(600, 1000);
     }
-    private void showData(){
+
+    private void showData(List<Transfer> filteredTransfers) {
         for (int count = 0; count < filteredTransfers.size(); count++) {
             dtm.setColumnIdentifiers(header);// add header in table model
             dtm.addRow(new Object[]{filteredTransfers.get(count).getUserName(), filteredTransfers.get(count).getUserSurname(),
@@ -67,10 +66,10 @@ public class HistoryGui {
                     filteredTransfers.get(count).getTitle()}); // add row dynamically into the table
         }
     }
-    public void filterData (String kindOfTransaction){
-        filteredTransfers = filteredTransfers.stream()
-                .filter(transfer -> transfer.getTransferType().equals(kindOfTransaction))
-                .collect(Collectors.toList());
-        showData();
+
+    private void clearData() {
+        DefaultTableModel dm = (DefaultTableModel) table.getModel();
+        dm.getDataVector().removeAllElements();
+        dm.fireTableDataChanged(); // notifies the JTable that the model has changed
     }
 }

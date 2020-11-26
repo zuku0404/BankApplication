@@ -12,7 +12,7 @@ public class CorrectnessUserDataChecker {
     private String surname;
 
     private ConditionsOfValidation cv = new ConditionsOfValidation();
-    private ArrayList<String> text = new ArrayList<>();
+    private List<String> errorMessageText = new ArrayList<>();
 
     public CorrectnessUserDataChecker(String login, String password, String pesel, String dateOfBirth, String name,
                                       String surname) {
@@ -23,25 +23,29 @@ public class CorrectnessUserDataChecker {
         this.dateOfBirth = dateOfBirth;
         this.name = name;
         this.surname = surname;
-
     }
+
     public List<String> checkValidationData() {
-        if (areAllConditionCorrect()) {
+        if (showMessageErrorsInValidation()) {
             UserCreator userCreator = new UserCreator();
-            userCreator.createUser(login,password,name,surname,dateOfBirth,pesel);
+            userCreator.createUser(login, password, name, surname, dateOfBirth, pesel);
         }
-        return text;
+        return errorMessageText;
     }
 
-    private boolean areAllConditionCorrect() {
-        text.add(cv.checkLogin(login));
-        text.add(cv.checkPassword(password));
-        text.add(cv.checkName(name));
-        text.add(cv.checkSurname(surname));
-        text.add(cv.checkDate(dateOfBirth));
-        text.add(cv.checkPesel(pesel));
+    private boolean showMessageErrorsInValidation() {
+        errorMessageText.add(cv.checkLogin(login));
+        errorMessageText.add(cv.checkPassword(password));
+        errorMessageText.add(cv.checkName(name));
+        errorMessageText.add(cv.checkSurname(surname));
+        errorMessageText.add(cv.checkDate(dateOfBirth));
+        errorMessageText.add(cv.checkPesel(pesel, dateOfBirth));
 
-        return text.get(0).isEmpty() && text.get(1).isEmpty() && text.get(2).isEmpty() && text.get(3).isEmpty() &&
-                text.get(4).isEmpty() && text.get(5).isEmpty(); //TODO lambda
+        for (int i = 0; i < errorMessageText.size(); i++) {
+            if (!errorMessageText.get(i).isEmpty()) {
+                return false;
+            }
+        }
+        return true;
     }
 }

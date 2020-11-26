@@ -9,21 +9,24 @@ import java.sql.SQLException;
 
 public class LoginCheckerDB {
     public int checkLogin(String login) {
-        String downloadLogs = " SELECT id from users WHERE login = ? ";
-        Connection connection = ConnectionUtil.createConnection();
+        String loginCheckerQuery = " SELECT id from users WHERE login = ? ";
+        Connection connection = null;
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement(downloadLogs);
+            connection = ConnectionUtil.createConnection();
+            ps = connection.prepareStatement(loginCheckerQuery);
             ps.setString(1, login);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return rs.getInt("id");
+                return rs.getInt(1);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
                 try {
-                    connection.close();
+                    if (connection != null) {
+                        connection.close();
+                    }
                 } catch (SQLException e) {
                     e.printStackTrace();
             }

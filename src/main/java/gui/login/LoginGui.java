@@ -1,5 +1,6 @@
 package gui.login;
 
+import gui.account.AccountGui;
 import gui.register.SignUpGui;
 import model.domain.userLog.UserLogPasChecker;
 
@@ -16,14 +17,20 @@ public class LoginGui {
         JLabel passwordLabel = new JLabel("Password: ");
 
         JTextField loginField = new JTextField(20);
-        JTextField passwordField = new JTextField(20);
+        JPasswordField passwordField = new JPasswordField(20);
+        passwordField.setEchoChar('*');
 
         JButton userCreatorButton = new JButton("Sign up");
         userCreatorButton.addActionListener(actionEvent -> SignUpGui.createGui());
 
         JButton loginButton = new JButton("Sign in");
-        loginButton.addActionListener(new UserLogPasChecker(loginField,passwordField));
-
+        loginButton.addActionListener(actionEvent -> {
+            int idUserChecker = UserLogPasChecker.checkAccount(loginField.getText(), passwordField.getText());
+            if (idUserChecker != 0) {
+                AccountGui accountGui = new AccountGui();
+                accountGui.openYourAccount(idUserChecker);
+            }
+        });
         frame.getContentPane().add(mainPanel);
         mainPanel.add(loginLabel);
         mainPanel.add(loginField);
