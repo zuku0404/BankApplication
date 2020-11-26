@@ -74,7 +74,8 @@ public class AccountInformationFetcher {
             }
         }
     }
-    public List<Transfer> getHistory(int userId) {
+
+    public List<Transfer> getHistory(int userId, String kindOfAction) {
         List<Transfer> historyUserList = new ArrayList<>();
         String query2 = "SELECT name_mod.name  Name_Owner, surname_modi.surname Surname_owner , name_mod2.name NAME_RECIPIENT ," +
                 " surname_mod2.surname SURNAME_RECIPIENT, TRANSFER_TYPE, TRANSFER_CASH, TITLE\n" +
@@ -83,13 +84,14 @@ public class AccountInformationFetcher {
                 "JOIN Users surname_modi ON t1.ID_USER = surname_modi.id\n" +
                 "JOIN Users name_mod2 ON t1.ID_USER_RECIPIENT = name_mod2.id\n" +
                 "JOIN Users surname_mod2 ON t1.ID_USER_RECIPIENT = surname_mod2.id\n" +
-                " WHERE ID_USER = ? " +
+                " WHERE ID_USER = ? AND TRANSFER_TYPE = ? " +
                 " ORDER BY ID_TRANSFER DESC";
         Connection connect = ConnectionUtil.createConnection();
         PreparedStatement ps = null;
         try {
             ps = connect.prepareStatement(query2);
             ps.setInt(1, userId);
+            ps.setString(2, kindOfAction);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) { // (&& historyUserList.size() < 20)
                 Transfer userTransfer = Transfer.builder()

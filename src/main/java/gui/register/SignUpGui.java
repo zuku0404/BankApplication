@@ -6,10 +6,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class SignUpGui  {
-    public static void main(String[] args) {
-        SignUpGui.createGui();
-    }
-
     public static void createGui() {
         JFrame frame = new JFrame();
         JPanel panel = new JPanel();
@@ -58,7 +54,7 @@ public class SignUpGui  {
         errorPesel.setForeground(Color.RED);
         errorPesel.setOpaque(false);
 
-        JLabel dateOfBirth = new JLabel("date of birth:");
+        JLabel dateOfBirth = new JLabel("date of birth: ");
         JTextField dateOfBirthText = new JTextField(25);
         JTextArea errorDateOfBirth = new JTextArea("",2,40);
         errorDateOfBirth.setLineWrap(true);
