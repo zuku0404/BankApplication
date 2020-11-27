@@ -3,7 +3,9 @@ package model.domain.transaction;
 public enum TransactionType {
     DEPOSIT("deposit"),
     TRANSFER ("transfer"),
-    CREDIT_CARD("credit card");
+    CREDIT_CARD("credit card"),
+    WITHDRAWAL("transfer,credit card"),
+    ALL_TRANSACTION("deposit,transfer,credit card");
 
     private String typeOfTransaction;
 
@@ -14,7 +16,5 @@ public enum TransactionType {
     public String getTypeOfTransaction() {
         return typeOfTransaction;
     }
-
-
 
 }
