@@ -1,36 +1,35 @@
 package gui.account;
 
-import data_base.TransferDB;
-import model.domain.account.CurrentAccountBalance;
-import model.validation.Validator;
+import controller.DepositController;
+import controller.TransferDetails;
+import gui.Gui;
 
 import javax.swing.*;
-import java.math.BigDecimal;
 
-import static model.domain.transaction.TransactionType.DEPOSIT;
+public class DepositGui implements Gui {
+    private static final String TITLE = "payment of money";
+    private int userId;
 
-public class DepositGui {
-    private DepositGui (){}
-    private  static final String TITLE = "payment of money";
+    public DepositGui(int userId) {
+        this.userId = userId;
+    }
 
-    public static void createDepositGui(int userId, JLabel labelCash) {
+    @Override
+    public void show() {
         JFrame frame = new JFrame();
         JPanel mainPanel = new JPanel();
 
-        JLabel depositCash = new JLabel("amount deposited into the account ");
+        JLabel depositCash = new JLabel("amount deposited into the model.account ");
         JTextField depositCashText = new JTextField(20);
         JButton confirmButton = new JButton("confirm");
         confirmButton.addActionListener(actionEvent -> {
-            Validator validator = new Validator();
-            if (validator.checkCash(depositCashText.getText())) {
-                BigDecimal depositCashDecimal = new BigDecimal(depositCashText.getText());
-                TransferDB transferDB = new TransferDB(userId, userId, DEPOSIT, depositCashDecimal, TITLE);
-                transferDB.createTransfer();
-                CurrentAccountBalance currentAccountBalance = new CurrentAccountBalance();
-                labelCash.setText(currentAccountBalance.getCurrentAccountBalance(userId).toString());
+            DepositController depositController = new DepositController();
+            TransferDetails transferDetails = new TransferDetails(depositCashText.getText(), userId, TITLE);
+            try {
+                depositController.makeTransfer(transferDetails);
                 frame.dispose();
-            } else {
-                JOptionPane.showMessageDialog(null, "the wrong amount was entered");
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
             }
         });
 
