@@ -28,7 +28,7 @@ public class LoginGui {
             int idUserChecker = UserLogPasChecker.checkAccount(loginField.getText(), passwordField.getText());
             if (idUserChecker != 0) {
                 AccountGui accountGui = new AccountGui();
-                accountGui.openYourAccount(idUserChecker);
+                accountGui.createAccountGui(idUserChecker);
             }
         });
         frame.getContentPane().add(mainPanel);

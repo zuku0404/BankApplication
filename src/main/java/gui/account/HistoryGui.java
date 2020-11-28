@@ -54,7 +54,7 @@ public class HistoryGui {
         downPanel.add(scrollPane);
 
         frame.setVisible(true);
-        frame.setSize(600, 1000);
+        frame.setSize(950, 1000);
     }
 
     private void showData(List<Transfer> filteredTransfers) {

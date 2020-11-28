@@ -1,22 +1,29 @@
 package gui.account;
 
-import data_base.TransferDB;
+import controller.CreditCardController;
+import controller.TransferDetails;
+import gui.Gui;
 import model.domain.account.CurrentAccountBalance;
-import model.domain.transaction.TransactionChecker;
-import model.domain.transaction.TransactionType;
-import model.validation.Validator;
 
 import javax.swing.*;
 import java.math.BigDecimal;
-import java.util.Optional;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
-public class CreditCardGui {
-    private CreditCardGui (){}
-    private  static final String TITLE = "cash withdrawal at an ATM";
+public class CreditCardGui implements Gui {
+    private static final String TITLE = "cash withdrawal at an ATM";
+    private int userId;
+    private BigDecimal balance;
+    private JLabel cashLabel;
 
-    public static void createCreditCardGui(BigDecimal allCashOnAccount, int userId, JLabel labelCash) {
+    public CreditCardGui(BigDecimal balance, int userId, JLabel cashLabel) {
+        this.userId = userId;
+        this.balance = balance;
+        this.cashLabel = cashLabel;
+    }
+
+    @Override
+    public void show() {
         JFrame frame = new JFrame();
         JPanel mainPanel = new JPanel();
 
@@ -24,23 +31,16 @@ public class CreditCardGui {
         JTextField creditCardCashText = new JTextField(20);
         JButton confirmButton = new JButton("confirm");
         confirmButton.addActionListener(actionEvent -> {
-            Validator validator = new Validator();
-            if (validator.checkCash(creditCardCashText.getText())) {
-                Optional<BigDecimal> cashBigDecimal = TransactionChecker.checkFoundsOnAccount(allCashOnAccount, creditCardCashText.getText());
-                if (cashBigDecimal.isPresent()) {
-                    TransferDB transferDB = new TransferDB(userId, userId, TransactionType.CREDIT_CARD, cashBigDecimal.get(), TITLE);
-                    transferDB.createTransfer();
+            CreditCardController creditCardController = new CreditCardController();
+            TransferDetails transferDetails = new TransferDetails(creditCardCashText.getText(), userId, TITLE, balance);
+            try {
+                creditCardController.makeTransfer(transferDetails);
                     CurrentAccountBalance currentAccountBalance = new CurrentAccountBalance();
-                    labelCash.setText(currentAccountBalance.getCurrentAccountBalance(userId).toString());
+                cashLabel.setText(currentAccountBalance.getCurrentAccountBalance(userId).toString());
                     frame.dispose();
+            } catch (IllegalArgumentException ex) {
+                showMessageDialog(null, ex.getMessage());
                 }
-                else {
-                    showMessageDialog(null, "you cannot withdraw money insufficient funds in your account");
-                }
-            }
-            else {
-                JOptionPane.showMessageDialog(null, "the wrong amount was entered");
-            }
         });
 
         mainPanel.add(creditCardCash);

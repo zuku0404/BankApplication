@@ -21,10 +21,9 @@ public class DepositController {
                 cash, transferDetails.getTitle());
         transferDB.createTransfer();
     }
-
     private void validationTransferData(String cash) {
         Validator validator = new Validator();
-        if (validator.checkCash(cash)) {
+        if (!validator.checkCash(cash)) {
             throw new IllegalArgumentException("Wrong amount was entered");
         }
     }

@@ -1,21 +1,26 @@
 package gui.account;
 
-import data_base.TransferDB;
+import controller.TransferController;
+import controller.TransferDetails;
+import gui.Gui;
 import model.domain.account.CurrentAccountBalance;
-import model.domain.transaction.TransactionChecker;
-import model.domain.transaction.TransactionType;
-import model.validation.Validator;
 
 import javax.swing.*;
 import java.math.BigDecimal;
-import java.util.Optional;
 
-import static javax.swing.JOptionPane.showMessageDialog;
+public class TransferGui implements Gui {
+    private BigDecimal balance;
+    private int userId;
+    private JLabel cashLabel;
 
-public class TransferGui {
-    private TransferGui(){}
+    public TransferGui(BigDecimal balance, int userId, JLabel cashLabel) {
+        this.balance = balance;
+        this.userId = userId;
+        this.cashLabel = cashLabel;
+    }
 
-    public static void createTransferGui(BigDecimal allCashOnAccount, int userId, JLabel labelCash) {
+    @Override
+    public void show() {
         JFrame frame = new JFrame();
         JPanel mainPanel = new JPanel();
 
@@ -31,34 +36,17 @@ public class TransferGui {
         JButton transferButton = new JButton("make a transfer");
 
         transferButton.addActionListener(actionEvent -> {
-            Validator validator = new Validator();
-            boolean firstCondition = validator.checkCash(cashText.getText());
-            boolean secondCondition = validator.checkTitle(titleText.getText());
-            boolean thirdCondition = validator.checkIdUserRecipient(idRecipientText.getText());
-
-            if (!firstCondition) {
-                JOptionPane.showMessageDialog(null, "the wrong amount was entered");
+            TransferController transferController = new TransferController();
+            TransferDetails transferDetails = new TransferDetails(userId, idRecipientText.getText(),
+                    titleText.getText(), cashText.getText(), balance);
+            try {
+                transferController.makeTransfer(transferDetails);
+                CurrentAccountBalance currentAccountBalance = new CurrentAccountBalance();
+                cashLabel.setText(currentAccountBalance.getCurrentAccountBalance(userId).toString());
+                frame.dispose();
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
             }
-            else if (!secondCondition) {
-                JOptionPane.showMessageDialog(null, "you didn't write transfer title");
-            }
-            else if (!thirdCondition) {
-                JOptionPane.showMessageDialog(null, "something wrong with recipient id");
-            }
-            else {
-                   Optional<BigDecimal> cashBigDecimal = TransactionChecker.checkFoundsOnAccount(allCashOnAccount, cashText.getText());
-                  if (cashBigDecimal.isPresent()) {
-                      TransferDB transferDB = new TransferDB(userId, Integer.parseInt(idRecipientText.getText()), TransactionType.TRANSFER,
-                              cashBigDecimal.get(), titleText.getText());
-                      transferDB.createTransfer();
-                      CurrentAccountBalance currentAccountBalance = new CurrentAccountBalance();
-                      labelCash.setText(currentAccountBalance.getCurrentAccountBalance(userId).toString());
-                      frame.dispose();
-                  }
-                  else {
-                      showMessageDialog(null, "you cannot withdraw money insufficient funds in your account");
-                  }
-               }
         });
 
         JPanel firstPanel = new JPanel();

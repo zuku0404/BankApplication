@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 
 public class TransferDetails {
     private int userId;
-    private int recipientUserId;
+    private String recipientUserId;
     private String title;
     private String cash;
     private BigDecimal balance;
@@ -19,5 +19,12 @@ public class TransferDetails {
         this.userId = userId;
         this.title = title;
         this.cash = cash;
+    }
+
+    public TransferDetails(String cash, int userId, String title, BigDecimal balance) {
+        this.userId = userId;
+        this.title = title;
+        this.cash = cash;
+        this.balance = balance;
     }
 }
