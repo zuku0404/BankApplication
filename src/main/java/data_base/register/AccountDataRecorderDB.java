@@ -28,7 +28,6 @@ public class AccountDataRecorderDB {
                 if (connection != null) {
                     connection.close();
                 }
-
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -42,4 +41,5 @@ public class AccountDataRecorderDB {
         }
     }
 }
+
 

@@ -1,14 +1,23 @@
 package data_base;
 
+import yaml_converter.YamlLoader;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class ConnectionUtil {
-    private static final String DRIVER = "org.h2.Driver";
-    private static final String URL = "jdbc:h2:file:D:/BankProject/example/aplikaBankowaa";
-    //            "jdbc:h2:mem:dupa;INIT=RUNSCRIPT FROM 'file:tablesAndData.sql'";
-    private static final String USER = "sa";
-    private static final String PASSWORD = "";
+    private ConnectionUtil() {
+    }
+
+    private static final String DRIVER = YamlLoader.loadYamlFile("driver");
+    //         "org.h2.Driver";
+    private static final String URL = YamlLoader.loadYamlFile("url");
+    //        "jdbc:h2:file:D:/BankProject/example/aplikaBankowaa";
+//        "jdbc:h2:mem:test;INIT=RUNSCRIPT FROM 'file:tablesAndData.sql'";
+    private static final String USER = YamlLoader.loadYamlFile("user");
+    //        "sa";
+    private static final String PASSWORD = YamlLoader.loadYamlFile("password");
+//         "";
 
     public static Connection createConnection() {
         Connection connection = null;

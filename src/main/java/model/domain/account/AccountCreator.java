@@ -5,6 +5,7 @@ import data_base.register.AccountFinderDB;
 import java.util.Random;
 
 public class AccountCreator {
+    private Random random = new Random();
 
     public Account createAccount() {
         return new Account(generateAccountNumber(),0.0);
@@ -21,7 +22,6 @@ public class AccountCreator {
         throw new IllegalStateException();
     }
     private String createRandomAccountNumber() {
-        Random random = new Random();
         StringBuilder bld = new StringBuilder();
         bld.append("1140");
         for (int i = 1; i < 23; i++) {

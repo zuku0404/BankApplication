@@ -25,10 +25,12 @@ public class LoginGui {
 
         JButton loginButton = new JButton("Sign in");
         loginButton.addActionListener(actionEvent -> {
-            int idUserChecker = UserLogPasChecker.checkAccount(loginField.getText(), passwordField.getText());
-            if (idUserChecker != 0) {
+            try {
+                int idUserChecker = UserLogPasChecker.checkAccount(loginField.getText(), passwordField.getText());
                 AccountGui accountGui = new AccountGui();
                 accountGui.createAccountGui(idUserChecker);
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
             }
         });
         frame.getContentPane().add(mainPanel);

@@ -5,11 +5,17 @@ import data_base.register.UserDataRecorderDB;
 import model.cipher.CaesarCipher;
 import model.domain.account.Account;
 import model.domain.account.AccountCreator;
+import model.domain.login.LoginCreator;
 import model.domain.pesel.Pesel;
 import model.domain.userLog.User;
 
 public class UserCreator {
-    public void createUser(String login, String password,String name,String surname,String dateOfBirth, String pesel){
+    //    public void createUser(String login, String password,String name,String surname,String dateOfBirth, String pesel){
+    public void createUser(String password, String name, String surname, String dateOfBirth, String pesel) {
+        LoginCreator loginCreator = new LoginCreator(name, surname); //added to randomLogin
+        String login = loginCreator.createLogin();
+        System.out.println(login);
+
         Pesel peselNumber = new Pesel(pesel);
 
         AccountCreator newAccount = new AccountCreator();
@@ -25,7 +31,5 @@ public class UserCreator {
 
         AccountDataRecorderDB adr = new AccountDataRecorderDB();
         adr.sendAccountDateToServer(newUser);
-
-
     }
 }

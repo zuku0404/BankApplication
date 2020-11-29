@@ -45,9 +45,6 @@ public class PeselChecker {
         for (int i = 0; i <= peselSplitter.length - 2; i++) {
             sum = sum + (weights[i] * (Integer.parseInt(peselSplitter[i])));
         }
-        if (10 - (sum % 10) != Integer.parseInt(peselSplitter[10])) {
-            return false;
-        }
-        return true;
+        return 10 - (sum % 10) == Integer.parseInt(peselSplitter[10]);
     }
 }

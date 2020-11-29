@@ -42,7 +42,9 @@ public class TransferDB {
             e.printStackTrace();
         } finally {
             try {
-                connect.close();
+                if (connect != null) {
+                    connect.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }

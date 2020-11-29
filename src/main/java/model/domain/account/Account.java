@@ -11,4 +11,8 @@ public class Account {
     public String getNumber() {
         return number;
     }
+
+    public double getCash() {
+        return cash;
+    }
 }

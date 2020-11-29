@@ -24,7 +24,9 @@ public class AccountFinderDB {
             ex.printStackTrace();
         } finally {
             try {
-                connect.close();
+                if (connect != null) {
+                    connect.close();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
