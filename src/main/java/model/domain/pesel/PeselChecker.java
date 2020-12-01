@@ -18,7 +18,7 @@ public class PeselChecker {
             return "";
     }
 
-    String[] modificationDateOfBirth(String dateOfBirth) {
+    private String[] modificationDateOfBirth(String dateOfBirth) {
         int[] positionDigit = {8, 9, 3, 4, 0, 1};
         String[] dateConvert = new String[6];
         int i = 0;
@@ -40,11 +40,12 @@ public class PeselChecker {
 
     private boolean isRestOfNumbersCorrect() {
         int sum = 0;
+        int number = 10;
         int[] weights = {1, 3, 7, 9, 1, 3, 7, 9, 1, 3};
 
         for (int i = 0; i <= peselSplitter.length - 2; i++) {
             sum = sum + (weights[i] * (Integer.parseInt(peselSplitter[i])));
         }
-        return 10 - (sum % 10) == Integer.parseInt(peselSplitter[10]);
+        return number - (sum % number) == Integer.parseInt(peselSplitter[number]);
     }
 }

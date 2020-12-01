@@ -13,7 +13,7 @@ public class UserCreator {
     //    public void createUser(String login, String password,String name,String surname,String dateOfBirth, String pesel){
     public void createUser(String password, String name, String surname, String dateOfBirth, String pesel) {
         LoginCreator loginCreator = new LoginCreator(name, surname); //added to randomLogin
-        String login = loginCreator.createLogin();
+        String login = loginCreator.setLogin();
         System.out.println(login);
 
         Pesel peselNumber = new Pesel(pesel);

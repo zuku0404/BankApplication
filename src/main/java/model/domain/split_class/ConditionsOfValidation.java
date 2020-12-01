@@ -6,12 +6,6 @@ import model.validation.Validator;
 public class ConditionsOfValidation {
     private Validator validator = new Validator();
 
-    public String checkLogin(String login) {
-        if (!validator.checkLogin(login)) {
-            return "login is too short, must be at least 8 characters long or does not contain uppercase";
-        }
-        return "";
-}
     public String checkPassword(String password) {
         if (!validator.checkPassword(password)) {
             return ("Your password must contain an uppercase letter, a lowercase letter, a special character " +

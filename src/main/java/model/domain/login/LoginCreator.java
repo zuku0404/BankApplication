@@ -14,29 +14,34 @@ public class LoginCreator {
         this.surname = surname;
     }
 
-    public String createLogin() {
+    public String setLogin() {
         String login = null;
-        int attempsNumber = 0;
+        int attemptNumber = 0;
         boolean correctLogin = false;
+
         while (!correctLogin) {
-            StringBuilder loginCreator = new StringBuilder();
-            loginCreator.append(name);
-            loginCreator.append(surname);
-            for (int i = 0; i < 4; i++) {
-                loginCreator.append(random.nextInt(10));
-            }
-            login = loginCreator.toString();
-            correctLogin = checkLoginArleadyExist(login);
-            attempsNumber++;
-            if (attempsNumber > 30) {
+            login = createLogin();
+            correctLogin = checkLoginAlreadyExist(login);
+            attemptNumber++;
+            if (attemptNumber > 30) {
                 throw new IllegalArgumentException("too many unsuccessful attempts");
             }
         }
         return login;
     }
 
-    private boolean checkLoginArleadyExist(String login) {
+    private boolean checkLoginAlreadyExist(String login) {
         LoginCheckerDB loginChecker = new LoginCheckerDB();
         return loginChecker.checkLogin(login) == 0;
+    }
+
+    private String createLogin() {
+        StringBuilder loginCreator = new StringBuilder();
+        loginCreator.append(name);
+        loginCreator.append(surname);
+        for (int i = 0; i < 4; i++) {
+            loginCreator.append(random.nextInt(10));
+        }
+        return loginCreator.toString();
     }
 }

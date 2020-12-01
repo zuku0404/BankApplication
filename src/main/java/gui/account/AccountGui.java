@@ -1,13 +1,20 @@
 package gui.account;
 
 import data_base.account_information.AccountInformationFetcher;
+import gui.Gui;
 import model.domain.account.CurrentAccountBalance;
 
 import javax.swing.*;
 
-public class AccountGui {
+public class AccountGui implements Gui {
+    private int id;
 
-    public void createAccountGui(int id) {
+    public AccountGui(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public void show() {
         CurrentAccountBalance currentAccountBalance = new CurrentAccountBalance();
         JFrame frame = new JFrame();
         JPanel mainPanel = new JPanel();
@@ -54,5 +61,6 @@ public class AccountGui {
         frame.getContentPane().add(mainPanel);
         frame.setSize(280, 300);
         frame.setVisible(true);
+
     }
 }

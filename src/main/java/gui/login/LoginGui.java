@@ -8,7 +8,9 @@ import javax.swing.*;
 
 public class LoginGui {
 
-    private LoginGui(){}
+    private LoginGui() {
+    }
+
     public static void createLoginGui() {
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -21,14 +23,17 @@ public class LoginGui {
         passwordField.setEchoChar('*');
 
         JButton userCreatorButton = new JButton("Sign up");
-        userCreatorButton.addActionListener(actionEvent -> SignUpGui.createGui());
+        userCreatorButton.addActionListener(actionEvent -> {
+            SignUpGui signUpGui = new SignUpGui();
+            signUpGui.show();
+        });
 
         JButton loginButton = new JButton("Sign in");
         loginButton.addActionListener(actionEvent -> {
             try {
-                int idUserChecker = UserLogPasChecker.checkAccount(loginField.getText(), passwordField.getText());
-                AccountGui accountGui = new AccountGui();
-                accountGui.createAccountGui(idUserChecker);
+                int idUserChecker = UserLogPasChecker.checkAccount(loginField.getText(), String.valueOf(passwordField.getPassword()));
+                AccountGui accountGui = new AccountGui(idUserChecker);
+                accountGui.show();
             } catch (IllegalArgumentException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }

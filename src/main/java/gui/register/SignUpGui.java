@@ -1,27 +1,20 @@
 package gui.register;
 
+import gui.Gui;
 import model.domain.split_class.Converter;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class SignUpGui  {
-    private SignUpGui() {
-    }
-    public static void createGui() {
+public class SignUpGui implements Gui {
+
+    @Override
+    public void show() {
         JFrame frame = new JFrame();
         JPanel panel = new JPanel();
 
         JLabel label = new JLabel("Registration Form: ");
         label.setFont(new Font("", Font.BOLD, 20));
-
-//        JLabel loginLabel = new JLabel("Login: ");
-//        JTextField loginText = new JTextField(25);
-//        JTextArea errorLogin = new JTextArea("",2,40);
-//        errorLogin.setLineWrap(true);
-//        errorLogin.setWrapStyleWord(true);
-//        errorLogin.setForeground(Color.RED);
-//        errorLogin.setOpaque(false);
 
         JLabel passwordLabel = new JLabel("Password: ");
         JPasswordField passwordText = new JPasswordField(25);
@@ -70,8 +63,6 @@ public class SignUpGui  {
                 Converter converter = new Converter(passwordText, peselText, dateOfBirthText, nameText, surnameText,
                         errorPassword, errorName, errorSurname, errorDateOfBirth, errorPesel);
 
-//            Converter converter = new Converter(loginText, passwordText, peselText, dateOfBirthText, nameText, surnameText,
-//                errorLogin,errorPassword,errorName,errorSurname,errorDateOfBirth,errorPesel);
                 if (converter.createAccountOrShowErrors()) {
                     JOptionPane.showMessageDialog(frame, "Account has been created, your login is ??????");
                     frame.dispose();
@@ -81,11 +72,6 @@ public class SignUpGui  {
             }
         });
         panel.setLayout(new GridLayout(0, 1));
-
-//        JPanel firstPanel = new JPanel();
-//        firstPanel.add(loginLabel);
-//        firstPanel.add(loginText);
-//        firstPanel.add(errorLogin);
 
         JPanel secondPanel = new JPanel();
         secondPanel.add(passwordLabel);
@@ -116,7 +102,6 @@ public class SignUpGui  {
         seventhPanel.add(errorDateOfBirth);
 
         panel.add(label);
-//        panel.add(firstPanel);
         panel.add(secondPanel);
         panel.add(thirdPanel);
         panel.add(fourthPanel);
