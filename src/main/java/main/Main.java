@@ -1,9 +1,10 @@
 package main;
 
-import gui.login.LoginGui;
+import gui.StartWindow;
 
 public class Main {
     public static void main(String[] args) {
-       LoginGui.createLoginGui();
+        StartWindow startWindow = new StartWindow();
+        startWindow.show();
     }
 }

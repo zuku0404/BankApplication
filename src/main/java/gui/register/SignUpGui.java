@@ -1,7 +1,8 @@
 package gui.register;
 
+import controller.RegisterController;
+import controller.RegisterDetails;
 import gui.Gui;
-import model.domain.split_class.Converter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,56 +20,37 @@ public class SignUpGui implements Gui {
         JLabel passwordLabel = new JLabel("Password: ");
         JPasswordField passwordText = new JPasswordField(25);
         passwordText.setEchoChar('*');
-        JTextArea errorPassword = new JTextArea("",2,40);
-        errorPassword.setLineWrap(true);
-        errorPassword.setWrapStyleWord(true);
-        errorPassword.setForeground(Color.RED);
-        errorPassword.setOpaque(false);
 
         JLabel nameLabel = new JLabel("Name: ");
         JTextField nameText = new JTextField(25);
-        JTextArea errorName = new JTextArea("",2,40);
-        errorName.setLineWrap(true);
-        errorName.setWrapStyleWord(true);
-        errorName.setForeground(Color.RED);
-        errorName.setOpaque(false);
 
         JLabel surnameLabel = new JLabel("Surname: ");
         JTextField surnameText = new JTextField(25);
-        JTextArea errorSurname = new JTextArea("",2,40);
-        errorSurname.setLineWrap(true);
-        errorSurname.setWrapStyleWord(true);
-        errorSurname.setForeground(Color.RED);
-        errorSurname.setOpaque(false);
 
         JLabel pesel = new JLabel("Pesel: ");
         JTextField peselText = new JTextField(25);
-        JTextArea errorPesel = new JTextArea("",2,40);
-        errorPesel.setLineWrap(true);
-        errorPesel.setWrapStyleWord(true);
-        errorPesel.setForeground(Color.RED);
-        errorPesel.setOpaque(false);
 
         JLabel dateOfBirth = new JLabel("date of birth: ");
         JTextField dateOfBirthText = new JTextField(25);
-        JTextArea errorDateOfBirth = new JTextArea("",2,40);
-        errorDateOfBirth.setLineWrap(true);
-        errorDateOfBirth.setWrapStyleWord(true);
-        errorDateOfBirth.setForeground(Color.RED);
-        errorDateOfBirth.setOpaque(false);
+
+        JTextArea allErrors = new JTextArea("", 2, 40);
+        allErrors.setLineWrap(true);
+        allErrors.setWrapStyleWord(true);
+        allErrors.setForeground(Color.RED);
+        allErrors.setOpaque(false);
 
         JButton createAccount = new JButton("create");
         createAccount.addActionListener(actionEvent -> {
+            RegisterDetails registerDetails = new RegisterDetails(passwordText, peselText, dateOfBirthText, nameText, surnameText);
+            RegisterController registerController = new RegisterController();
             try {
-                Converter converter = new Converter(passwordText, peselText, dateOfBirthText, nameText, surnameText,
-                        errorPassword, errorName, errorSurname, errorDateOfBirth, errorPesel);
+                String loginOrError = registerController.createUserAndGetUserId(registerDetails);
+                JOptionPane.showMessageDialog(frame, "Account has been created, your login is " + loginOrError);
+                frame.dispose();
 
-                if (converter.createAccountOrShowErrors()) {
-                    JOptionPane.showMessageDialog(frame, "Account has been created, your login is ??????");
-                    frame.dispose();
-                }
             } catch (IllegalArgumentException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
+                allErrors.setText(ex.getMessage());
             }
         });
         panel.setLayout(new GridLayout(0, 1));
@@ -76,17 +58,14 @@ public class SignUpGui implements Gui {
         JPanel secondPanel = new JPanel();
         secondPanel.add(passwordLabel);
         secondPanel.add(passwordText);
-        secondPanel.add(errorPassword);
 
         JPanel thirdPanel = new JPanel();
         thirdPanel.add(nameLabel);
         thirdPanel.add(nameText);
-        thirdPanel.add(errorName);
 
         JPanel fourthPanel = new JPanel();
         fourthPanel.add(surnameLabel);
         fourthPanel.add(surnameText);
-        fourthPanel.add(errorSurname);
 
         JPanel fifthPanel = new JPanel();
         fifthPanel.add(createAccount);
@@ -94,12 +73,13 @@ public class SignUpGui implements Gui {
         JPanel sixthPanel = new JPanel();
         sixthPanel.add(pesel);
         sixthPanel.add(peselText);
-        sixthPanel.add(errorPesel);
 
         JPanel seventhPanel = new JPanel();
         seventhPanel.add(dateOfBirth);
         seventhPanel.add(dateOfBirthText);
-        seventhPanel.add(errorDateOfBirth);
+
+        JPanel eighth = new JPanel();
+        eighth.add(allErrors);
 
         panel.add(label);
         panel.add(secondPanel);
@@ -107,10 +87,11 @@ public class SignUpGui implements Gui {
         panel.add(fourthPanel);
         panel.add(seventhPanel);
         panel.add(sixthPanel);
+        panel.add(eighth);
         panel.add(fifthPanel);
 
         frame.getContentPane().add(panel);
-        frame.setSize(520, 600);
+        frame.setSize(520, 900);
         frame.setVisible(true);
     }
 }

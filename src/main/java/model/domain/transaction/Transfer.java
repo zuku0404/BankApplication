@@ -25,4 +25,13 @@ public class Transfer {
         this.transferCash = transferCash;
         this.title = title;
     }
+
+    @Override
+    public String toString() {
+        return "user: " + userName + " " + userSurname +
+                ",\t recipientName: " + recipientName + " " + recipientSurname +
+                ",\t transferType: " + transferType +
+                ",\t transferCash: " + transferCash +
+                ",\t title: " + title;
+    }
 }

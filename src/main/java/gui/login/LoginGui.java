@@ -34,6 +34,7 @@ public class LoginGui {
                 int idUserChecker = UserLogPasChecker.checkAccount(loginField.getText(), String.valueOf(passwordField.getPassword()));
                 AccountGui accountGui = new AccountGui(idUserChecker);
                 accountGui.show();
+                frame.dispose();
             } catch (IllegalArgumentException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }

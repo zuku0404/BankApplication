@@ -17,6 +17,7 @@ public class AccountGui implements Gui {
     public void show() {
         CurrentAccountBalance currentAccountBalance = new CurrentAccountBalance();
         JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         JPanel mainPanel = new JPanel();
 
         JLabel cash = new JLabel(currentAccountBalance.getCurrentAccountBalance(id).toString());

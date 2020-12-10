@@ -10,9 +10,9 @@ import model.domain.pesel.Pesel;
 import model.domain.userLog.User;
 
 public class UserCreator {
-    //    public void createUser(String login, String password,String name,String surname,String dateOfBirth, String pesel){
-    public void createUser(String password, String name, String surname, String dateOfBirth, String pesel) {
-        LoginCreator loginCreator = new LoginCreator(name, surname); //added to randomLogin
+    public String createUser(String password, String name, String surname, String dateOfBirth, String pesel) {
+
+        LoginCreator loginCreator = new LoginCreator(name, surname);
         String login = loginCreator.setLogin();
         System.out.println(login);
 
@@ -31,5 +31,7 @@ public class UserCreator {
 
         AccountDataRecorderDB adr = new AccountDataRecorderDB();
         adr.sendAccountDateToServer(newUser);
+
+        return login;
     }
 }
