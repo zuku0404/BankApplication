@@ -1,0 +1,5 @@
+An application that simulates the operation of a banking website. After starting the program, the user can use
+the application in the console and with the use of GUI. In the program, we can create an account where each field
+is validated. If the registration is successful, a unique login and account number will be created for the user.
+Thanks to the created password and login, the user can get to his account, where he can deposit and withdraw money,
+make transfers and view the history of transactions.
